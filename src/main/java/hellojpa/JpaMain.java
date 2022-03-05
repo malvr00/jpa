@@ -18,17 +18,12 @@ public class JpaMain {
 
         try {
 
-            // 비영속
-            Member member = new Member();
-            member.setId(100L);
-            member.setName("HelloJPA");
-
-            // 영속
+            Member member = new Member(200L, "member200");
             em.persist(member);
-            // 준영속성
-//            em.detach(member);
-            // 삭제
-//            em.remove(member);
+
+            em.flush();
+
+            System.out.println("===========================");
 
             tx.commit();
         } catch (Exception e) {
