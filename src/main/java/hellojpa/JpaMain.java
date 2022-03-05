@@ -18,17 +18,12 @@ public class JpaMain {
 
         try {
 
-            Member member = em.find(Member.class, 150L);
-            member.setName("AAA");
+            Member member = new Member();
+            member.setId(1L);
+            member.setUsername("A");
+            member.setRoleType(RoleType.USER);
 
-            // 특정 준영속성 설정
-            em.detach(member);
-
-            // 영속성 초기화
-//            em.clear();
-
-            // 영속성 종료
-//            em.close();
+            em.persist(member);
 
             System.out.println("===========================");
 
