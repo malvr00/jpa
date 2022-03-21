@@ -1,7 +1,6 @@
 package jpabook.jpashop;
 
-import jpabook.jpashop.domain.Member;
-import jpabook.jpashop.domain.Team;
+import jpabook.jpashop.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -18,34 +17,40 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Order order = em.find(Order.class, 6L);
 
-            // 저장
+            List<OrderItem> orderItems = order.getOrderItems();
 
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);   // Id 에 값이 들어감 ( 영속성 상태 )
-
-            Member member = new Member();
-            member.setName("member1");
-            member.changeTeam(team);
-            em.persist(member);
-
-//            team.getMembers().add(member);
-//            team.addMember(member);
-//            em.flush();
-//            em.clear();
-
-            Team findTeam = em.find(Team.class, team.getId());
-            List<Member> members = findTeam.getMembers();
-
-            System.out.println("=======================");
-            for (Member m : members) {
-                System.out.println("m = " + m.getName());
+            System.out.println("===========================");
+            for (OrderItem o : orderItems) {
+                System.out.println(" o => " + o.getId());
             }
-            System.out.println("=======================");
-
-
-
+            System.out.println("===========================");
+//            Member member = new Member();
+//            member.setName("memberA");
+//            member.setCity("a");
+//            member.setStreet("a");
+//            member.setZipcode("1");
+//
+//            em.persist(member);
+//
+//            Order order = new Order();
+//            order.setMember(member);
+//            order.setStatus(OrderStatus.ORDER);
+//            em.persist(order);
+//
+//            Item item = new Item();
+//            item.setName("Test");
+//            item.setPrice(111);
+//            item.setStockQuantity(10);
+//            em.persist(item);
+//
+//            OrderItem orderItem = new OrderItem();
+//            orderItem.setOrder(order);
+//            orderItem.setItem(item);
+//            em.persist(orderItem);
+//
+//            order.addOrderItem(orderItem);
 
             tx.commit();
         } catch (Exception e) {

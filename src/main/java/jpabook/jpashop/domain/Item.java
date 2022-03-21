@@ -16,7 +16,7 @@ public class Item {
 
     private int price;
 
-    private int stokQuantity;
+    private int stockQuantity;
 
     public Long getId() {
         return id;
@@ -43,10 +43,10 @@ public class Item {
     }
 
     public int getStokQuantity() {
-        return stokQuantity;
+        return stockQuantity;
     }
 
     public void setStokQuantity(int stokQuantity) {
-        this.stokQuantity = stokQuantity;
+        this.stockQuantity = stokQuantity;
     }
 }
