@@ -20,24 +20,33 @@ public class JpaMain {
         try {
 
             // 저장
+
             Team team = new Team();
             team.setName("TeamA");
             em.persist(team);   // Id 에 값이 들어감 ( 영속성 상태 )
 
             Member member = new Member();
             member.setName("member1");
-            member.setTeam(team);
+            member.changeTeam(team);
             em.persist(member);
 
-            em.flush();
-            em.clear();
+//            team.getMembers().add(member);
+//            team.addMember(member);
+//            em.flush();
+//            em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
-            List<Member> members = findMember.getTeam().getMembers();
+            Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
 
-            for(Member m : members){
+            System.out.println("=======================");
+            for (Member m : members) {
                 System.out.println("m = " + m.getName());
             }
+            System.out.println("=======================");
+
+
+
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();

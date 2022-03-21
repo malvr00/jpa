@@ -17,6 +17,12 @@ public class Team {
     @OneToMany(mappedBy = "team")
     private List<Member> members = new ArrayList<>();
 
+    // changeTeam 또는 addMember 둘중 하나만 사용해야함. 나중에 문제가 발생
+    public void addMember(Member member){
+        member.setTeam(this);
+        members.add(member);
+    }
+
     public Long getId() {
         return id;
     }
@@ -40,4 +46,14 @@ public class Team {
     public void setMembers(List<Member> members) {
         this.members = members;
     }
+
+    // 무한 루프 발생
+//    @Override
+//    public String toString() {
+//        return "Team{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", members=" + members +
+//                '}';
+//    }
 }
