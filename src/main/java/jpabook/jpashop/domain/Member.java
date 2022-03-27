@@ -25,6 +25,10 @@ public class Member {
     @JoinColumn(name = "TEAM_ID",insertable = false, updatable = false)
     private Team team;
 
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
+
     // 좋은 방법은 아님. 보통 주문 내역을 찾을 때 order에 member를 찾기 때문에.
 //    @OneToMany(mappedBy = "member")
 //    private List<Order> orders = new ArrayList<>();
