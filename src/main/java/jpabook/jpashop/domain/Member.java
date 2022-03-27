@@ -29,6 +29,9 @@ public class Member {
     @JoinColumn(name = "LOCKER_ID")
     private Locker locker;
 
+    @OneToMany(mappedBy = "member")
+    private List<MemberProduct> memberProducts = new ArrayList<>();
+
     // 좋은 방법은 아님. 보통 주문 내역을 찾을 때 order에 member를 찾기 때문에.
 //    @OneToMany(mappedBy = "member")
 //    private List<Order> orders = new ArrayList<>();
