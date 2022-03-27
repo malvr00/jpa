@@ -21,17 +21,21 @@ public class Member {
 
     private String zipcode;
 
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID",insertable = false, updatable = false)
+    private Team team;
+
     // 좋은 방법은 아님. 보통 주문 내역을 찾을 때 order에 member를 찾기 때문에.
-    @OneToMany(mappedBy = "member")
-    private List<Order> orders = new ArrayList<>();
+//    @OneToMany(mappedBy = "member")
+//    private List<Order> orders = new ArrayList<>();
 
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
+//    public List<Order> getOrders() {
+//        return orders;
+//    }
+//
+//    public void setOrders(List<Order> orders) {
+//        this.orders = orders;
+//    }
 
     public Long getId() {
         return id;

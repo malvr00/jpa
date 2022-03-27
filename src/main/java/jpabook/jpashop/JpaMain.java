@@ -17,40 +17,16 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Order order = em.find(Order.class, 6L);
 
-            List<OrderItem> orderItems = order.getOrderItems();
+            Member member = new Member();
+            member.setName("member1");
 
-            System.out.println("===========================");
-            for (OrderItem o : orderItems) {
-                System.out.println(" o => " + o.getId());
-            }
-            System.out.println("===========================");
-//            Member member = new Member();
-//            member.setName("memberA");
-//            member.setCity("a");
-//            member.setStreet("a");
-//            member.setZipcode("1");
-//
-//            em.persist(member);
-//
-//            Order order = new Order();
-//            order.setMember(member);
-//            order.setStatus(OrderStatus.ORDER);
-//            em.persist(order);
-//
-//            Item item = new Item();
-//            item.setName("Test");
-//            item.setPrice(111);
-//            item.setStockQuantity(10);
-//            em.persist(item);
-//
-//            OrderItem orderItem = new OrderItem();
-//            orderItem.setOrder(order);
-//            orderItem.setItem(item);
-//            em.persist(orderItem);
-//
-//            order.addOrderItem(orderItem);
+            em.persist(member);
+
+            Team team = new Team();
+            team.setName("teamA");
+            team.getMembers().add(member);
+            em.persist(team);
 
             tx.commit();
         } catch (Exception e) {
