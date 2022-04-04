@@ -19,17 +19,11 @@ public class JpaMain {
 
         try {
 
-            Member member = new Member();
-            member.setCreatedBy("kim");
-            member.setCreatedDate(LocalDateTime.now());
+            Book book = new Book();
+            book.setName("JPA");
+            book.setAuthor("저자");
 
-            em.persist(member);
-
-//            em.flush();
-//            em.clear();
-//
-//            Movie findMovie = em.find(Movie.class, movie.getId());
-//            System.out.println("findMovie = " + findMovie);
+            em.persist(book);
 
             tx.commit();
         } catch (Exception e) {
