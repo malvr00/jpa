@@ -25,24 +25,12 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "TEAM_ID",insertable = false, updatable = false)
     private Team team;
 
-    @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
+//    @OneToOne
+//    @JoinColumn(name = "LOCKER_ID")
+//    private Locker locker;
 
-    @OneToMany(mappedBy = "member")
-    private List<MemberProduct> memberProducts = new ArrayList<>();
-
-    // 좋은 방법은 아님. 보통 주문 내역을 찾을 때 order에 member를 찾기 때문에.
 //    @OneToMany(mappedBy = "member")
-//    private List<Order> orders = new ArrayList<>();
-
-//    public List<Order> getOrders() {
-//        return orders;
-//    }
-//
-//    public void setOrders(List<Order> orders) {
-//        this.orders = orders;
-//    }
+//    private List<MemberProduct> memberProducts = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -83,4 +71,20 @@ public class Member extends BaseEntity {
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+//    public List<MemberProduct> getMemberProducts() {
+//        return memberProducts;
+//    }
+//
+//    public void setMemberProducts(List<MemberProduct> memberProducts) {
+//        this.memberProducts = memberProducts;
+//    }
 }

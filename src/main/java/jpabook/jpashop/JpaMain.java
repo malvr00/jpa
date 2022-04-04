@@ -1,11 +1,9 @@
 package jpabook.jpashop;
 
 import jpabook.jpashop.domain.*;
+import org.hibernate.Hibernate;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,15 +17,25 @@ public class JpaMain {
 
         try {
 
-            Book book = new Book();
-            book.setName("JPA");
-            book.setAuthor("저자");
+            Member member = new Member();
+            member.setName("member1");
 
-            em.persist(book);
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            Member ref = em.getReference(Member.class, member.getId());
+            System.out.println("ref = " + ref.getClass());  // Proxy
+//            ref.getName();
+
+            Hibernate.initialize(ref);  // 강제 초기화
+//            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(ref)); // 프록시 인스턴스의 초기화 여부 확인
 
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
+            e.printStackTrace();
         }finally {
             em.close();
         }
