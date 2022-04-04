@@ -29,13 +29,11 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            Member m1 = em.find(Member.class, member.getId());
+//            Member m1 = em.find(Member.class, member.getId());
 
-            System.out.println("m1 = " + m1.getTeam().getClass());
-            System.out.println("===============");
-            m1.getTeam().getName();
-            System.out.println("===============");
-
+            // N + 1 문제 member만 조회했는데 team도 같이 쿼리가 나감
+            List<Member> members = em.createQuery("select m from Member m", Member.class)
+                    .getResultList();
 
             tx.commit();
         } catch (Exception e) {
