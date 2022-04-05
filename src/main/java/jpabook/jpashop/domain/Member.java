@@ -18,7 +18,6 @@ public class Member extends BaseEntity {
 
     private String name;
 
-    // 값 타입은 정말 단순할때만 사용해야함. 값을 추적 및 변경해야한다면 엔티티로 만들어야한다.
     // 기간
     @Enumerated
     private Period workPeriod;
@@ -37,7 +36,7 @@ public class Member extends BaseEntity {
     private Set<String> favoriteFoods = new HashSet<>();
 
     // 값 타입 컬렉션의 제약사항
-    // 값은 변경하면 추적이 어렵다. 값을 추적 및 변경해야한다면 엔티티로 만들어야한다.
+    // 값은 변경하면 추적이 어렵다. * 값을 추적 및 변경해야한다면 엔티티로 만들어야한다.
     // 값 타입 컬렉션에 변경 사항이 발생하면, 주인 엔티티와 연관된 모든 데이터를 삭제하고, 값 타입 컬렉션에 있는 현재 값을 모두 다시 저장
     // 값 타입 컬렉션을 매핑하는 테이블은 모든 컬럼을 묶어서 기본키를 구성해야함 : Null 입력 X , 중복 저장 X
     // 대도록 사용하면 안됌 차라리 일대다 관계를 고려하는게 나음
