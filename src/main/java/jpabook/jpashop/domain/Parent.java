@@ -13,7 +13,9 @@ public class Parent {
 
     private String name;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    // orhanRemoval 참조하는 곳이 하나일 때 사용해야함
+    // 특정 엔티티가 개인 소유일 때만 사용해야함
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Child> childList = new ArrayList<>();
 
     public void addChild(Child child){
