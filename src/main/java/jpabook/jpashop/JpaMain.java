@@ -17,23 +17,42 @@ public class JpaMain {
 
         try {
             Member member = new Member();
-            Member member2 = new Member();
+            member.setName("member1");
+            member.setHomeAddress(new Address("test", "test", "test"));
 
-            Address address = new Address("test", "test", "test");
-//            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
 
-//            member.setName("test");
-//            member2.setName("test2");
-//            member.setHomeAddress(address);
-            // member.setHomeAddress(address);  // 이렇게 사용하면 안됌. member, member2 가 같은 주소값인 address 를 참조하고 있어서
-            //                                     address 의 인스턴스 멤버 값을 변경하면 member, member2 모두 업데이트 쿼리가 실행됌
-            //                                     공유 자원의 문제가 발생함
-//            member2.setHomeAddress(copyAddress);
+            member.getAddressHistory().add(new AddressEntity("test1", "test1", "test1"));
+            member.getAddressHistory().add(new AddressEntity("test2", "test2", "test2"));
 
             em.persist(member);
-//            em.persist(member2);
 
-//            member.getHomeAddress().setCity("newCity");
+            em.flush();
+            em.clear();
+
+            System.out.println("========================================");
+            Member findMember = em.find(Member.class, member.getId());
+
+            findMember.getFavoriteFoods().remove("치킨");
+            findMember.getFavoriteFoods().add("사과");
+
+            // 값 타입 컬렉션의 제약사항
+            // 값은 변경하면 추적이 어렵다.
+            // 값 타입 컬렉션에 변경 사항이 발생하면, 주인 엔티티와 연관된 모든 데이터를 삭제하고, 값 타입 컬렉션에 있는 현재 값을 모두 다시 저장
+            // 값 타입 컬렉션을 매핑하는 테이블은 모든 컬럼을 묶어서 기본키를 구성해야함 : Null 입력 X , 중복 저장 X
+            // 대도록 사용하면 안됌
+//            findMember.getAddressHistory().remove(new Address("test1", "test1", "test1"));
+//            findMember.getAddressHistory().add(new Address("test4", "test1", "test1"));
+
+            // 대안
+            List<AddressEntity> list = findMember.getAddressHistory();
+            for (AddressEntity addressEntity : list) {
+                if(addressEntity.getAddress().getCity().equals("test1")){
+                    addressEntity.setAddress(new Address("test4", addressEntity.getAddress().getStreet(), addressEntity.getAddress().getZipcode()));
+                }
+            }
 
             tx.commit();
         } catch (Exception e) {
