@@ -4,6 +4,9 @@ import jpabook.jpashop.domain.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,43 +19,32 @@ public class JpaMain {
         tx.begin();
 
         try {
+
+            // Criteria 사용 준비
+            // 유지 보수 힘들어서 잘 안씀
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            // 사용법
+            CriteriaQuery<Member> query = cb.createQuery(Member.class);
+
+            Root<Member> m = query.from(Member.class);
+
+            CriteriaQuery<Member> cq = query.select(m);
+            cq.where(cb.equal(m.get("username"), "kim"));
+
+            em.createQuery(cq).getResultList();
+// ===============================================================
             Member member = new Member();
             member.setName("member1");
-            member.setHomeAddress(new Address("test", "test", "test"));
-
-            member.getFavoriteFoods().add("치킨");
-            member.getFavoriteFoods().add("족발");
-            member.getFavoriteFoods().add("피자");
-
-            member.getAddressHistory().add(new AddressEntity("test1", "test1", "test1"));
-            member.getAddressHistory().add(new AddressEntity("test2", "test2", "test2"));
-
             em.persist(member);
 
-            em.flush();
-            em.clear();
+            // flush -> commit, query
+            // dbconn.excuteQuery("select * from member"); <- jpa 가 아니라서 flush 가 안됌
+            // 그래서 강제로 em.flush() 실행 시켜줌
 
-            System.out.println("========================================");
-            Member findMember = em.find(Member.class, member.getId());
+            // 네이티브 쿼리
+            // 적절한 시점에 강제로 플러시 필요
+            em.createNativeQuery("SELECT MEMBER_ID, city, street FROM MEMBER", Member.class).getResultList();
 
-            findMember.getFavoriteFoods().remove("치킨");
-            findMember.getFavoriteFoods().add("사과");
-
-            // 값 타입 컬렉션의 제약사항
-            // 값은 변경하면 추적이 어렵다.
-            // 값 타입 컬렉션에 변경 사항이 발생하면, 주인 엔티티와 연관된 모든 데이터를 삭제하고, 값 타입 컬렉션에 있는 현재 값을 모두 다시 저장
-            // 값 타입 컬렉션을 매핑하는 테이블은 모든 컬럼을 묶어서 기본키를 구성해야함 : Null 입력 X , 중복 저장 X
-            // 대도록 사용하면 안됌
-//            findMember.getAddressHistory().remove(new Address("test1", "test1", "test1"));
-//            findMember.getAddressHistory().add(new Address("test4", "test1", "test1"));
-
-            // 대안
-            List<AddressEntity> list = findMember.getAddressHistory();
-            for (AddressEntity addressEntity : list) {
-                if(addressEntity.getAddress().getCity().equals("test1")){
-                    addressEntity.setAddress(new Address("test4", addressEntity.getAddress().getStreet(), addressEntity.getAddress().getZipcode()));
-                }
-            }
 
             tx.commit();
         } catch (Exception e) {
