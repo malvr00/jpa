@@ -24,15 +24,6 @@ public class Member extends BaseEntity {
     @Enumerated
     private Address homeAddress;
 
-    // 주소
-    @Enumerated
-    @AttributeOverrides({
-            @AttributeOverride(name = "city", column=@Column(name = "work_city")),
-            @AttributeOverride(name = "street", column=@Column(name = "work_street")),
-            @AttributeOverride(name = "zipcode", column=@Column(name = "work_zipcode")),
-    })
-    private Address workAddress;
-
     // 실무에선 즉시로딩 사용하면 안됌. 가극적 지연로딩만 사용해야한다
     // 1. 즉시 로딩 적용하면 예상하지 못한 sql 발생
     // 2. 즉시 로딩은 JPQL 에서 N+1 문제를 이르킨다.

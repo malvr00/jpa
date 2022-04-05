@@ -17,16 +17,23 @@ public class JpaMain {
 
         try {
             Member member = new Member();
-            Address address = new Address();
+            Member member2 = new Member();
 
-            address.setCity("test");
-            address.setStreet("test");
-            address.setZipcode("test");
+            Address address = new Address("test", "test", "test");
+//            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
 
-            member.setName("test");
-            member.setHomeAddress(address);
+//            member.setName("test");
+//            member2.setName("test2");
+//            member.setHomeAddress(address);
+            // member.setHomeAddress(address);  // 이렇게 사용하면 안됌. member, member2 가 같은 주소값인 address 를 참조하고 있어서
+            //                                     address 의 인스턴스 멤버 값을 변경하면 member, member2 모두 업데이트 쿼리가 실행됌
+            //                                     공유 자원의 문제가 발생함
+//            member2.setHomeAddress(copyAddress);
 
             em.persist(member);
+//            em.persist(member2);
+
+//            member.getHomeAddress().setCity("newCity");
 
             tx.commit();
         } catch (Exception e) {
