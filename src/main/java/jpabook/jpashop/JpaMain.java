@@ -17,23 +17,16 @@ public class JpaMain {
 
         try {
 
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
+            Child child1 = new Child();
+            Child child2 = new Child();
 
-            Member member = new Member();
-            member.setName("member1");
-            member.setTeam(team);
-            em.persist(member);
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
 
-            em.flush();
-            em.clear();
-
-//            Member m1 = em.find(Member.class, member.getId());
-
-            // N + 1 문제 member만 조회했는데 team도 같이 쿼리가 나감
-            List<Member> members = em.createQuery("select m from Member m", Member.class)
-                    .getResultList();
+//            em.persist(child1);
+//            em.persist(child2);
+            em.persist(parent);
 
             tx.commit();
         } catch (Exception e) {
