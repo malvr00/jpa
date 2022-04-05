@@ -3,22 +3,14 @@ package jpabook.jpashop.domain;
 public class ValueMain {
     public static void main(String[] args) {
 
-
-        Integer a1 = 10;
-        Integer b1 = a1;
-
-        a1 = 20;
-
         int a = 10;
-        int b = a;
+        int b = 10;
 
-        a = 20;
+        System.out.println("a ==  b" + (a == b));
 
-        System.out.println("a = " + a);
-        System.out.println("b = " + b);
+        Address address1 = new Address("test","test","test");
+        Address address2 = new Address("test","test","test");
 
-        System.out.println("a1 = " + a1);
-        System.out.println("b1 = " + b1);
-
+        System.out.println(address1.equals(address2));
     }
 }
