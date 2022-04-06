@@ -48,11 +48,17 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-//            String sql = "select m from Member m join fetch m.team";
-//            String sql = "select t From Team t join fetch t.members";   // 컬랙션으로 select 할 경우 중복제거가 안됌 (데이터 뻥튀기 조심)
-//            String sql = "select distinct t From Team t join fetch t.members";  // jpa 에서 같은 엔티티 제거 해줌 sql 이랑 다르게 동작
-            String sql = "select t From Team t join t.members";
-            List<Team> query = em.createQuery(sql, Team.class).getResultList();
+            String sql = "select t From Team t";
+            // 절때 쓰면 안됌 메모리에서 페이징함
+            // 1:N 에서 사용하면 안됌
+//            List<Team> query = em.createQuery(sql, Team.class)
+//                    .setFirstResult(0)
+//                    .setMaxResults(1)
+//                    .getResultList();
+            List<Team> query = em.createQuery(sql, Team.class)
+                    .setFirstResult(0)
+                    .setMaxResults(2)
+                    .getResultList();
             for (Team s : query) {
                 System.out.println("member = " + s.getName() + ", " + s.getMembers().size());
                 for(Member m : team.getMembers()){
