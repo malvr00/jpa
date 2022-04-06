@@ -25,16 +25,15 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            List<MemberDto> resultList = em.createQuery("select new jpabook.jpashop.jpql.MemberDto(m.username, m.age) from Member m", MemberDto.class)
+            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
+                    .setFirstResult(0)
+                    .setMaxResults(10)
                     .getResultList();
 
-            MemberDto memberDto = resultList.get(0);
-            System.out.println("memberDto.getUsername() = " + memberDto.getUsername());
-            System.out.println("memberDto.getAge() = " + memberDto.getAge());
-            
-
-            // 조인 ( 기본 쿼리랑 같게 써야함 )     이렇게 해야 조인이 언제 되는지 예측이 됌
-//            List<Team> result = em.createQuery("select t from Member m join m.team t", Team.class).getResultList();
+            System.out.println("result.size = " + resultList.size());
+            for (Member member1 : resultList) {
+                System.out.println("member1 = " + member1);
+            }
 
             tx.commit();
         } catch (Exception e) {
