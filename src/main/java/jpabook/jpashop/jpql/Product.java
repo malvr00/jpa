@@ -1,20 +1,17 @@
-package jpabook.jpashop.domain;
+package jpabook.jpashop.jpql;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
-//@Entity
-public class Locker {
+@Entity
+public class Product {
 
     @Id @GeneratedValue
     private Long id;
-
     private String name;
-
-//    @OneToOne(mappedBy = "locker")
-//    private Member member;
+    private int price;
+    private int stockAmount;
 
     public Long getId() {
         return id;
@@ -30,5 +27,21 @@ public class Locker {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getStockAmount() {
+        return stockAmount;
+    }
+
+    public void setStockAmount(int stockAmount) {
+        this.stockAmount = stockAmount;
     }
 }
