@@ -45,16 +45,18 @@ public class JpaMain {
             member3.setType(MemberType.ADMIN);
             em.persist(member3);
 
-            em.flush();
+            // 벌크연산 = update delete 문
+            // executeUpdate 벌크 연산 주의
+            // 벌크 연산은 영속성 컨텍스트를 무시하고 데이터 베이스에 직접 쿼리 발송
+            // 해결 방안 : 1. 벌크 연산을 먼저실행, 2. 벌크 연산 수행 후 영속성 컨텍스트 초기화
+            int resultCount = em.createQuery("update Member m set m.age = 20")
+                    .executeUpdate();
             em.clear();
 
-            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
-                    .setParameter("username", "회원1")
-                    .getResultList();
+            Member findMember = em.find(Member.class, member.getId());
 
-            for (Member member1 : resultList) {
-                System.out.println("member1 = " + member1);
-            }
+            System.out.println("findMember = " + findMember);
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
