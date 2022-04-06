@@ -22,21 +22,19 @@ public class JpaMain {
 
             em.persist(member);
 
+            em.flush();
+            em.clear();
 
-            // 동적
-            Member singleResult = em.createQuery("select m from Member m where m.username = :username", Member.class)
-                    .setParameter("username", "member1")
-                    .getSingleResult();
-            System.out.println("singleResult.getUsername() = " + singleResult.getUsername());
+            List<MemberDto> resultList = em.createQuery("select new jpabook.jpashop.jpql.MemberDto(m.username, m.age) from Member m", MemberDto.class)
+                    .getResultList();
 
+            MemberDto memberDto = resultList.get(0);
+            System.out.println("memberDto.getUsername() = " + memberDto.getUsername());
+            System.out.println("memberDto.getAge() = " + memberDto.getAge());
+            
 
-            List<Member> resultList = query1.getResultList();   // 여러개
-            Member resultSingle = query1.getSingleResult();   // 하나 일 때 ( 없거나 두개 이상일때 인셉션 터짐 )
-
-
-            TypedQuery<String> query2 = em.createQuery("select m.username from Member m", String.class);
-            Query query3 = em.createQuery("select m.username, m.age from Member m");    // 타입 정보를 받을 수 없을 때
-
+            // 조인 ( 기본 쿼리랑 같게 써야함 )     이렇게 해야 조인이 언제 되는지 예측이 됌
+//            List<Team> result = em.createQuery("select t from Member m join m.team t", Team.class).getResultList();
 
             tx.commit();
         } catch (Exception e) {
