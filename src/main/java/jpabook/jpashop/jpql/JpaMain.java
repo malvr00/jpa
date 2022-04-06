@@ -16,24 +16,24 @@ public class JpaMain {
 
         try {
 
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
             Member member = new Member();
             member.setUsername("member1");
             member.setAge(10);
+            member.changeTeam(team);
 
             em.persist(member);
 
             em.flush();
             em.clear();
 
-            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
-                    .setFirstResult(0)
-                    .setMaxResults(10)
+            String sql = "select m from Member m left join m.team t on t.name = 'teamA'";
+//            String sql = "select m from Member m left join m.team t";
+            List<Member> resultList = em.createQuery(sql, Member.class)
                     .getResultList();
-
-            System.out.println("result.size = " + resultList.size());
-            for (Member member1 : resultList) {
-                System.out.println("member1 = " + member1);
-            }
 
             tx.commit();
         } catch (Exception e) {
