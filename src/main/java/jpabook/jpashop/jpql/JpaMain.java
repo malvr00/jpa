@@ -21,7 +21,7 @@ public class JpaMain {
             em.persist(team);
 
             Member member = new Member();
-            member.setUsername("member1");
+            member.setUsername("관리자");
             member.setAge(10);
             member.changeTeam(team);
             member.setType(MemberType.ADMIN);
@@ -30,18 +30,19 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String sql = "select m.username, 'HELLO', true from Member m where m.type =  :usertype";
-            List<Object[]> resultList = em.createQuery(sql)
-                    // 이렇게 사용하지 않고 하드로 쓰게 되면 쿼리에 패키지명을 모두 써줘야함
-                    .setParameter("usertype", MemberType.ADMIN)
-                    .getResultList();
-
-            for (Object[] objects : resultList) {
-                System.out.println("objects[0] = " + objects[0]);
-                System.out.println("objects[1] = " + objects[1]);
-                System.out.println("objects[2] = " + objects[2]);
-
+//            String sql = "select " +
+//                            "case when m.age <= 10 then '학생요금'   " +
+//                            "case when m.age >= 60 then '경로요금'   " +
+//                            "else '일반요금' " +
+//                            "end " +
+//                            "from Member m";
+//            String sql = "select coalesce(m.username, '이름 없는 회원') from Member m";
+            String sql = "select nullif(m.username, '관리자') from Member m";
+            List<String> query = em.createQuery(sql, String.class).getResultList();
+            for (String s : query) {
+                System.out.println("s = " + s);
             }
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
