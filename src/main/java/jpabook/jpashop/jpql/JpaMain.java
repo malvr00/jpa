@@ -36,13 +36,10 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-//            String sql = "select concat('a', 'b') from Member m";
-//            String sql = "select substring(m.username, 2,3) from Member m";
-//            String sql = "select locate('de','abcdefg') from Member m";
-//            String sql = "select size(t.members) from Team t";
-            String sql = "select function('group_concat', m.username) from Member m";
-            List<String> query = em.createQuery(sql, String.class).getResultList();
-            for (String s : query) {
+            // 묵시적 조인 사용 하면 나중에 혼도올 수 있어서 상용 안하는거 권장
+            String sql = "select m.team from Member m";
+            List<Team> query = em.createQuery(sql, Team.class).getResultList();
+            for (Team s : query) {
                 System.out.println("s = " + s);
             }
 
