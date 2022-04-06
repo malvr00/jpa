@@ -48,23 +48,26 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String sql = "select t From Team t";
-            // 절때 쓰면 안됌 메모리에서 페이징함
-            // 1:N 에서 사용하면 안됌
-//            List<Team> query = em.createQuery(sql, Team.class)
-//                    .setFirstResult(0)
-//                    .setMaxResults(1)
-//                    .getResultList();
-            List<Team> query = em.createQuery(sql, Team.class)
-                    .setFirstResult(0)
-                    .setMaxResults(2)
+            String sql = "select m From Member m where m.team = :team";
+
+            List<Member> query = em.createQuery(sql, Member.class)
+                    .setParameter("team", team)
                     .getResultList();
-            for (Team s : query) {
-                System.out.println("member = " + s.getName() + ", " + s.getMembers().size());
-                for(Member m : team.getMembers()){
-                    System.out.println(" -> member = " + m);
-                }
+            for(Member m : query){
+                System.out.println("member = " + m);
             }
+//            String sql = "select m From Member m where m = :member";
+//            Member findMember = em.createQuery(sql, Member.class)
+//                    .setParameter("member", member)
+//                    .getSingleResult();
+//            System.out.println("findMember = " + findMember);
+
+//            for (Team s : query) {
+//                System.out.println("member = " + s.getName() + ", " + s.getMembers().size());
+//                for(Member m : team.getMembers()){
+//                    System.out.println(" -> member = " + m);
+//                }
+//            }
 
             tx.commit();
         } catch (Exception e) {
