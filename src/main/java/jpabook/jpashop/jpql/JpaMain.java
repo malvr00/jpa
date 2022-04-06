@@ -24,17 +24,24 @@ public class JpaMain {
             member.setUsername("member1");
             member.setAge(10);
             member.changeTeam(team);
-
+            member.setType(MemberType.ADMIN);
             em.persist(member);
 
             em.flush();
             em.clear();
 
-            String sql = "select m from Member m left join m.team t on t.name = 'teamA'";
-//            String sql = "select m from Member m left join m.team t";
-            List<Member> resultList = em.createQuery(sql, Member.class)
+            String sql = "select m.username, 'HELLO', true from Member m where m.type =  :usertype";
+            List<Object[]> resultList = em.createQuery(sql)
+                    // 이렇게 사용하지 않고 하드로 쓰게 되면 쿼리에 패키지명을 모두 써줘야함
+                    .setParameter("usertype", MemberType.ADMIN)
                     .getResultList();
 
+            for (Object[] objects : resultList) {
+                System.out.println("objects[0] = " + objects[0]);
+                System.out.println("objects[1] = " + objects[1]);
+                System.out.println("objects[2] = " + objects[2]);
+
+            }
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
