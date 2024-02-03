@@ -19,11 +19,11 @@ public class Member extends BaseEntity {
     private String name;
 
     // 기간
-    @Enumerated
+    @Embedded
     private Period workPeriod;
 
     // 주소
-    @Enumerated
+    @Embedded
     private Address homeAddress;
 
     // 값 타입을 하나 이상 저장할 때 사용
